@@ -1,43 +1,74 @@
 RubyVote: Election Methods Library in Ruby
-===========================================
+=============================================
 
-:Author: Benjamin Mako Hill
-:Copyright: MIT Media Lab and MIT
-:License: GNU GPL
+.. Caution::
 
-Summary
---------
+   This software is pre release software. The authors of this software
+   are neither expert Ruby programmers or elections in election
+   methods. We are hackers and enthusiasts in both. This software has
+   bugs and it's quite possible that is has bugs that may skew
+   results. If you understand Ruby or election methods, please audit
+   the code.
 
-**Version:** 0.1
+Overview
+---------
 
-This software includes an set of classes to tally votes and compute
-winners in elections or votes using a series of different
-methods. Currrently these include:
+**Latest Version:** 0.1
 
-* Plurality or "winner-take-all"
-* Approval
-* Borda
-* Simple Condorcet
-* Condorcet with Cloneproof SSD
+**Download Latest Version:** `here
+<http://rubyforge.org/projects/rubyvote>`__
 
-More information can be found at the following pages:
+`RubyVote` is an election methods library implemented in Ruby.  It is
+designed to make it very easy to implement a variety of different types
+of elections in Ruby including relatively complex election methods like
+Condorcet.  It could be useful for any sort of election, poll, or
+decision making.
 
-* http://en.wikipedia.org/wiki/Plurality_electoral_system
-* http://en.wikipedia.org/wiki/Approval_voting
-* http://en.wikipedia.org/wiki/Borda_count
-* http://en.wikipedia.org/wiki/Condorcet_method
-* http://en.wikipedia.org/wiki/Shulze_method
+New Versions
+*************
 
-Writing support for a new module (e.g., instant runnof voting) is a
-fantastic way to to contribute to this module.
+`RubyVote` is graciously hosted by `RubyForge
+<http://rubyforge.org/>`__.
 
-This software is prerelease software. I am both a relatively new Ruby
-progreammming and relatively new to election methods. These election
-methods have bugs and may have bugs that skew results. If you are
-understand Ruby and election methods, please do me a favor and audit
-my code.
+You can visit the `RubyVote` homepage (a version of this file) here:
+
+ http://rubyvote.rubyforge.org/
+
+You can visit the RubyForge project page to download the latest
+version of software, get access to the latest development version from
+Subversion, to file or bug, to look through documentation, to
+participate in the forums, or to contribute in other ways. That page
+is here:
+
+ http://rubyforge.org/projects/rubyvote
 
 
+More Information
+*****************
+
+`RubyVote` is a library -- not an application or a voting machine. It
+simply takes the raw "tallies" of votes and computes the results.
+Currently, it does not include any sample interfaces (although if
+contributed, these may be included).
+
+`RubyVote` current includes a set of classes to tally votes and compute
+winners in elections or votes using a series of different methods.
+Currently these include:
+
+* `Plurality`__ or "winner-take-all"
+* `Approval`__
+* `Borda`__
+* `Simple Condorcet`__
+* `Condorcet with Cloneproof SSD`__
+
+__ http://en.wikipedia.org/wiki/Plurality_electoral_system
+__ http://en.wikipedia.org/wiki/Approval_voting
+__ http://en.wikipedia.org/wiki/Borda_count
+__ http://en.wikipedia.org/wiki/Condorcet_method
+__ http://en.wikipedia.org/wiki/Shulze_method
+
+Writing support for a currently unsupported voting method (e.g., instant
+runoff voting) is a fantastic way to to contribute to this module.
 
 How To Use This Library
 -------------------------
@@ -49,15 +80,16 @@ new vote object. You should then either pass an array of votes to the
 object upon creation or pass votes in one at at a time.
 
 
-.. Note:: *You* are responsible for ensuring that the votes are in
-	  correct form before you hand them to this module. This will
-	  not currently check for most types of invalid votes and does
-	  not (currently) accept a list of candidates at creation from
-	  which it checks all votes. As such, new candidates will be
-	  created when seen. If you think this is a meaningful
-	  addition to this library, please send a patch. Otherwise,
-	  please check for the validity of votes BEFORE you pass them
-	  to this election module.
+.. Note::
+
+   *You* are responsible for ensuring that the votes are in correct
+   form before you hand them to this module. This will not currently
+   check for most types of invalid votes and does not (currently)
+   accept a list of candidates at creation from which it checks all
+   votes. As such, new candidates will be created when seen. If you
+   think this is a meaningful addition to this library, please send a
+   patch. Otherwise, please check for the validity of votes BEFORE you
+   pass them to this election module.
 
 Examples of each type of election currently supported can be seen in
 the test.rb file distributed in this archive.
@@ -152,7 +184,7 @@ ElectionResult Objects
 
 Each election result object will have the following methods:
 
-* #winner? -- return boolean as to the winner or winners of an election
+* #winner? -- return Boolean as to the winner or winners of an election
 * #winners -- an array of winners of the election
 * #ranked_candidates -- (where available) a list of ranked candidates
 
@@ -184,7 +216,7 @@ Currently, the only contributor to this program is Benjamin Mako Hill
 working at the MIT Media Lab. Please feel free to contribute to this
 module and get your name added here.
 
-For more information about Mako and his programs, you can seee his
+For more information about Mako and his programs, you can see his
 homepage here:
 
  http://mako.cc
