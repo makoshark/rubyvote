@@ -1,0 +1,196 @@
+RubyVote: Election Methods Library in Ruby
+===========================================
+
+:Author: Benjamin Mako Hill
+:Copyright: MIT Media Lab and MIT
+:License: GNU GPL
+
+Summary
+--------
+
+**Version:** 0.1
+
+This software includes an set of classes to tally votes and compute
+winners in elections or votes using a series of different
+methods. Currrently these include:
+
+* Plurality or "winner-take-all"
+* Approval
+* Borda
+* Simple Condorcet
+* Condorcet with Cloneproof SSD
+
+More information can be found at the following pages:
+
+* http://en.wikipedia.org/wiki/Plurality_electoral_system
+* http://en.wikipedia.org/wiki/Approval_voting
+* http://en.wikipedia.org/wiki/Borda_count
+* http://en.wikipedia.org/wiki/Condorcet_method
+* http://en.wikipedia.org/wiki/Shulze_method
+
+Writing support for a new module (e.g., instant runnof voting) is a
+fantastic way to to contribute to this module.
+
+This software is prerelease software. I am both a relatively new Ruby
+progreammming and relatively new to election methods. These election
+methods have bugs and may have bugs that skew results. If you are
+understand Ruby and election methods, please do me a favor and audit
+my code.
+
+
+
+How To Use This Library
+-------------------------
+
+Using this library is relatively simple but will differ per election
+methods. In each case, you will need to ``require`` the appropriate
+file for the type of election you will be running and then create a
+new vote object. You should then either pass an array of votes to the
+object upon creation or pass votes in one at at a time.
+
+
+.. Note:: *You* are responsible for ensuring that the votes are in
+	  correct form before you hand them to this module. This will
+	  not currently check for most types of invalid votes and does
+	  not (currently) accept a list of candidates at creation from
+	  which it checks all votes. As such, new candidates will be
+	  created when seen. If you think this is a meaningful
+	  addition to this library, please send a patch. Otherwise,
+	  please check for the validity of votes BEFORE you pass them
+	  to this election module.
+
+Examples of each type of election currently supported can be seen in
+the test.rb file distributed in this archive.
+
+ElectionVote Objects
+*********************
+
+Each ElectionVote object has the following exposed attributions:
+
+* ElectionVote#votes -- returns a list of votes that have been tallied
+* ElectionVote#candidates -- returns a list of candidates
+
+Additionally, each subclass will create a #results method which will
+return an ElectionResult subclass of the appropriate type.
+
+Currently, you use this module by creating any of the following types
+of vote objects:
+
+Plurality
+^^^^^^^^^^
+
+This is the most simple "winner-take-all" system. The array passed to
+the new vote object should be an array of strings. Each string is
+counted as one vote for a candidate.
+
+Example::
+
+ require 'election'
+ vote_array = [ "A", "B", "B", "A" ]
+ resultobject = PluralityVote.new(vote_array).result
+
+Approval
+^^^^^^^^^
+
+Approval is similar to plurality voting except that users can vote for
+more than one candidate at once naming all of the candidates that they
+approve of.
+
+Example::
+
+ require 'election'
+ vote_array = [ ["A", "B"],  ["B", "A"], ["B"] ]
+ resultobject = ApprovalVote.new(vote_array).result
+
+Borda
+^^^^^^
+
+Borda is a positional voting system and, as a result, takes a list of
+ranked candidates and assigns points to each candidates based on their
+order. In Borda, there are *n* candidate and the first candidates is
+assigned *n* - 1 points and each subsequent candidate is assigned one
+less point. The candidate is assigned no points.
+
+Currently, all candidates should be ranked in each ballot.
+
+Example::
+
+ require 'positional'
+ vote_array = [ ["A", "B"],  ["B", "A"], ["B", "A"] ]
+ resultobject = BordaVote.new(vote_array).result
+
+Pure Condorcet
+^^^^^^^^^^^^^^^^
+
+Condorcet is a preferential system and, as such, each vote must list
+of ranked preferences from most to least preferred. Currently, all
+candidates must be listed. No ties are allowed on ballots with the
+current implementation.
+
+Example::
+
+ require 'condorcet'
+ vote_array = [ ["A", "B"],  ["B", "A"], ["B", "A"] ]
+ resultobject = PureCondorcetVote.new(vote_array).result
+
+Cloneproof Schwartz Sequential Dropping
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+`Cloneproof SSD` is a Condorcet variant with the ability to create
+winners in circular defeats (e.g., A beats B, B beats C, C beats A)
+where this is no clear winner in Condorcet. It is used identically to
+Pure Condorcet.
+
+Example::
+
+ require 'condorcet'
+ vote_array = [ ["A", "B"],  ["B", "A"], ["B", "A"] ]
+ resultobject = CloneproofSSDVote.new(vote_array).result
+
+ElectionResult Objects
+***********************
+
+Each election result object will have the following methods:
+
+* #winner? -- return boolean as to the winner or winners of an election
+* #winners -- an array of winners of the election
+* #ranked_candidates -- (where available) a list of ranked candidates
+
+
+License
+--------
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or (at
+your option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Look in the COPYING file for the text of the GNU GPL.
+
+Authors
+--------
+
+Currently, the only contributor to this program is Benjamin Mako Hill
+working at the MIT Media Lab. Please feel free to contribute to this
+module and get your name added here.
+
+For more information about Mako and his programs, you can seee his
+homepage here:
+
+ http://mako.cc
+
+For more information about the MIT Media Lab, you can see its homepage
+here:
+
+ http://www.media.mit.edu
+
