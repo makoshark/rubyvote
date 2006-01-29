@@ -65,7 +65,7 @@ __ http://en.wikipedia.org/wiki/Plurality_electoral_system
 __ http://en.wikipedia.org/wiki/Approval_voting
 __ http://en.wikipedia.org/wiki/Borda_count
 __ http://en.wikipedia.org/wiki/Condorcet_method
-__ http://en.wikipedia.org/wiki/Shulze_method
+__ http://en.wikipedia.org/wiki/Schulze_method
 
 Writing support for a currently unsupported voting method (e.g., instant
 runoff voting) is a fantastic way to to contribute to this module.
