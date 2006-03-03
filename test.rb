@@ -21,6 +21,7 @@
 require 'election'
 require 'condorcet'
 require 'positional'
+require 'runoff'
 
 def print_winner(result)
   if not result.winner?
@@ -128,6 +129,60 @@ def approval_test1
   print_winner( ApprovalVote.new(vote_array).result )
 end
 
+def runoff_test1
+  puts "USING RUNOFF..."
+  puts "The winner shold be: A"
+
+  vote_array = Array.new
+  142.times {vote_array << "ABCD".split("")}
+  26.times {vote_array << "BCDA".split("")}
+  15.times {vote_array << "CDBA".split("")}
+  17.times {vote_array << "DCBA".split("")}
+
+  print_winner( InstantRunoffVote.new(vote_array).result )
+end
+
+def runoff_test2
+  puts "USING RUNOFF..."
+  puts "The winner shold be: D"
+
+  vote_array = Array.new
+  42.times {vote_array << "ABCD".split("")}
+  26.times {vote_array << "BCDA".split("")}
+  15.times {vote_array << "CDBA".split("")}
+  17.times {vote_array << "DCBA".split("")}
+
+  print_winner( InstantRunoffVote.new(vote_array).result )
+end
+
+def runoff_test3
+  puts "USING RUNOFF..."
+  puts "The winner shold be: C"
+
+  vote_array = Array.new
+  42.times {vote_array << "ABCD".split("")}
+  26.times {vote_array << "ACBD".split("")}
+  15.times {vote_array << "BACD".split("")}
+  32.times {vote_array << "BCAD".split("")}
+  14.times {vote_array << "CABD".split("")}
+  49.times {vote_array << "CBAD".split("")}
+  17.times {vote_array << "ABDC".split("")}
+  23.times {vote_array << "BADC".split("")}
+  37.times {vote_array << "BCDA".split("")}
+  11.times {vote_array << "CADB".split("")}
+  16.times {vote_array << "CBDA".split("")}
+  54.times {vote_array << "ADBC".split("")}
+  36.times {vote_array << "BDCA".split("")}
+  42.times {vote_array << "CDAB".split("")}
+  13.times {vote_array << "CDBA".split("")}
+  51.times {vote_array << "DABC".split("")}
+  33.times {vote_array << "DBCA".split("")}
+  39.times {vote_array << "DCAB".split("")}
+  12.times {vote_array << "DCBA".split("")}
+
+  print_winner( InstantRunoffVote.new(vote_array).result )
+end
+
 condorcet_test1()
 ssd_test1()
 ssd_test2()
@@ -135,4 +190,6 @@ ssd_test3()
 borda_test1()
 plurality_test1()
 approval_test1()
-
+runoff_test1()
+runoff_test2()
+runoff_test3()
