@@ -13,7 +13,7 @@ RubyVote: Election Methods Library in Ruby
 Overview
 ---------
 
-**Latest Version:** 0.1
+**Latest Version:** 0.2
 
 **Download Latest Version:** `here
 <http://rubyforge.org/projects/rubyvote>`__
@@ -60,15 +60,17 @@ Currently these include:
 * `Borda`__
 * `Simple Condorcet`__
 * `Condorcet with Cloneproof SSD`__
+* `Instant Runnoff Voting`__ (Thanks Alexis Darrasse!)
 
 __ http://en.wikipedia.org/wiki/Plurality_electoral_system
 __ http://en.wikipedia.org/wiki/Approval_voting
 __ http://en.wikipedia.org/wiki/Borda_count
 __ http://en.wikipedia.org/wiki/Condorcet_method
 __ http://en.wikipedia.org/wiki/Schulze_method
+__ http://en.wikipedia.org/wiki/Instant_Runoff_Voting
 
-Writing support for a currently unsupported voting method (e.g., instant
-runoff voting) is a fantastic way to to contribute to this module.
+Writing support for a currently unsupported voting method is a fantastic
+way to to contribute to this module.
 
 How To Use This Library
 -------------------------
@@ -178,6 +180,23 @@ Example::
  require 'condorcet'
  vote_array = [ ["A", "B"],  ["B", "A"], ["B", "A"] ]
  resultobject = CloneproofSSDVote.new(vote_array).result
+
+Instant Runnoff Voting (IRV)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+IRV is a preferential voting system used widely for government elections
+in Australia and New Zealand and elsewhere. IRV asks voters to rank
+candidates in preference and then holds a series of "runoff" elections
+by eliminating the weakest candidate and recomputing the election
+results until there exists a candidate who has a majority of the
+remaining votes.
+
+Example::
+
+ require 'runoff'
+ vote_array = [ ["A", "B"],  ["B", "A"], ["B", "A"] ]
+ resultobject = InstantRunoffVote.new(vote_array).result
+
 
 ElectionResult Objects
 ***********************
