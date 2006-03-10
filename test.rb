@@ -18,10 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-require 'election'
-require 'condorcet'
-require 'positional'
-require 'runoff'
+require 'lib/rubyvote'
 
 def print_winner(result)
   if not result.winner?
@@ -183,6 +180,19 @@ def runoff_test3
   print_winner( InstantRunoffVote.new(vote_array).result )
 end
 
+def range_test1
+  puts "USING RANGE..."
+  puts "The winner shold be: B"
+
+  vote_array = Array.new
+  42.times {vote_array << {:A => 10, :B => 5, :C => 2, :D => 1}}
+  26.times {vote_array << {:A => 1, :B => 10, :C => 5, :D => 2}}
+  15.times {vote_array << {:A => 1, :B => 2, :C => 10, :D => 5}}
+  17.times {vote_array << {:A => 1, :B => 2, :C => 5, :D => 10}}
+
+  print_winner( RangeVote.new(vote_array).result )
+end
+
 condorcet_test1()
 ssd_test1()
 ssd_test2()
@@ -193,3 +203,4 @@ approval_test1()
 runoff_test1()
 runoff_test2()
 runoff_test3()
+range_test1()

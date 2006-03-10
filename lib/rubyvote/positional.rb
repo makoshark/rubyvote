@@ -29,8 +29,6 @@
 ## These classes inherit from and/or are modeled after the classes in
 ## election.rb and condorcet.rb
 
-require 'election'
-
 class BordaVote < ElectionVote
 
   def initialize(votes=nil)

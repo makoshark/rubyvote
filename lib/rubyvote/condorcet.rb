@@ -31,8 +31,6 @@
 ## The CondorcetVote class is subclassed by the PureCondorcetVote and
 ## the CloneproofSSDVote classes but should not be used directly.
 
-require 'election'
-
 class CondorcetVote < ElectionVote
 
   def tally_vote(vote=nil)

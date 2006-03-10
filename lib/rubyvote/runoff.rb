@@ -1,5 +1,3 @@
-require 'election'
-
 class InstantRunoffVote < ElectionVote
   def initialize(votes=nil)
     @candidates = Array.new
