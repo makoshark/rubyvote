@@ -6,7 +6,7 @@ require 'election_test_helper'
 class TestRunoffVote < Test::Unit::TestCase
   include ElectionTestHelper
 
-  def test_runoff
+  def test_irv
     vote_array = Array.new
     142.times {vote_array << "ABCD".split("")}
     26.times {vote_array << "BCDA".split("")}
@@ -16,7 +16,7 @@ class TestRunoffVote < Test::Unit::TestCase
     test_winner( "A", InstantRunoffVote.new(vote_array).result )
   end
 
-  def test_runoff2
+  def test_irv2
     vote_array = Array.new
     42.times {vote_array << "ABCD".split("")}
     26.times {vote_array << "BCDA".split("")}
@@ -26,7 +26,7 @@ class TestRunoffVote < Test::Unit::TestCase
     test_winner( "D", InstantRunoffVote.new(vote_array).result )
   end
 
-  def test_runoff3
+  def test_irv3
     vote_array = Array.new
     42.times {vote_array << "ABCD".split("")}
     26.times {vote_array << "ACBD".split("")}
@@ -50,5 +50,16 @@ class TestRunoffVote < Test::Unit::TestCase
 
     test_winner( "C", InstantRunoffVote.new(vote_array).result )
   end
+
+  def test_irv_logic1
+    vote_array = Array.new
+    42.times {vote_array << "ABCD".split("")}
+    26.times {vote_array << "BCDA".split("")}
+    15.times {vote_array << "CDBA".split("")}
+    15.times {vote_array << "DCBA".split("")}
+
+    test_winner ( "B", InstantRunoffLogicVote.new(vote_array).result )
+  end
+  ###TODO: test all the other variants
 end
 

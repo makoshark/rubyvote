@@ -3,6 +3,6 @@
 require File.dirname(__FILE__) + '/rubyvote/election'
 require File.dirname(__FILE__) + '/rubyvote/condorcet'
 require File.dirname(__FILE__) + '/rubyvote/positional'
-require File.dirname(__FILE__) + '/rubyvote/runoff'
+require File.dirname(__FILE__) + '/rubyvote/irv'
 require File.dirname(__FILE__) + '/rubyvote/range'
 
