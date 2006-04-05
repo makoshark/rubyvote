@@ -58,7 +58,7 @@ class TestRunoffVote < Test::Unit::TestCase
     15.times {vote_array << "CDBA".split("")}
     15.times {vote_array << "DCBA".split("")}
 
-    test_winner ( "B", InstantRunoffLogicVote.new(vote_array).result )
+    test_winner( "B", InstantRunoffLogicVote.new(vote_array).result )
   end
   ###TODO: test all the other variants
 end
