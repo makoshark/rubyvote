@@ -1,10 +1,10 @@
-#!/usr/bin/ruby
+#!/usr/bin/ruby -Ilib
 
 require 'test/unit'
-require 'election_test_helper'
+require 'rubyvote/election'
+require 'rubyvote/condorcet'
 
 class TestCondorcetVote < Test::Unit::TestCase
-  include ElectionTestHelper
 
   def test_condorcet
     vote_array = Array.new
@@ -12,7 +12,7 @@ class TestCondorcetVote < Test::Unit::TestCase
     3.times {vote_array << "CBA".split("")}
     2.times {vote_array << "BAC".split("")}
 
-    test_winner( ["B"], PureCondorcetVote.new(vote_array).result )
+    assert_equal ["B"], PureCondorcetVote.new(vote_array).result.winners[0]
   end
 
   def test_ssd
@@ -26,7 +26,7 @@ class TestCondorcetVote < Test::Unit::TestCase
     7.times {vote_array << "DCEBA".split("")}
     8.times {vote_array << "EBADC".split("")}
 
-    test_winner( "E", CloneproofSSDVote.new(vote_array).result )
+    assert_equal "E", CloneproofSSDVote.new(vote_array).result.winners[0]
   end
 
   def test_ssd2
@@ -41,7 +41,7 @@ class TestCondorcetVote < Test::Unit::TestCase
     5.times {vote_array << "DBAC".split("")}
     4.times {vote_array << "DCBA".split("")}
 
-    test_winner( "D", CloneproofSSDVote.new(vote_array).result )
+    assert_equal "D", CloneproofSSDVote.new(vote_array).result.winners[0] 
   end
 
   def test_ssd3
@@ -51,6 +51,6 @@ class TestCondorcetVote < Test::Unit::TestCase
     2.times {vote_array << "DBCA".split("")}
     2.times {vote_array << "CBDA".split("")}
 
-    test_winner("B", CloneproofSSDVote.new(vote_array).result )
+    assert_equal "B", CloneproofSSDVote.new(vote_array).result.winners[0]
   end
 end

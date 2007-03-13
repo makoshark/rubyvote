@@ -1,10 +1,10 @@
-#!/usr/bin/ruby
+#!/usr/bin/ruby -Ilib
 
 require 'test/unit'
-require 'election_test_helper'
+require 'rubyvote/election'
+require 'rubyvote/range'
 
 class TestRangeVote < Test::Unit::TestCase
-  include ElectionTestHelper
 
   def test_range
     vote_array = []
@@ -13,7 +13,7 @@ class TestRangeVote < Test::Unit::TestCase
     15.times {vote_array << {'A' => 1, 'B' => 2, 'C' => 10, 'D' => 5}}
     17.times {vote_array << {'A' => 1, 'B' => 2, 'C' => 5, 'D' => 10}}
 
-    test_winner('B', RangeVote.new(vote_array).result )
+    assert_equal('B', RangeVote.new(vote_array).result.winners[0] )
   end
 
   def test_tie
@@ -21,12 +21,12 @@ class TestRangeVote < Test::Unit::TestCase
     10.times {vote_array << {'A' => 5, 'B' => 2}}
     10.times {vote_array << {'A' => 2, 'B' => 5}}
 
-    test_winner(['A','B'], RangeVote.new(vote_array).result )
+    assert_equal(['A','B'], RangeVote.new(vote_array).result.winners )
   end
 
   def test_no_win
     vote_array = []
 
-    test_winner(nil, RangeVote.new(vote_array).result )
+    assert_equal(nil, RangeVote.new(vote_array).result.winners[0] )
   end
 end

@@ -1,10 +1,10 @@
-#!/usr/bin/ruby
+#!/usr/bin/ruby -Ilib
 
 require 'test/unit'
-require 'election_test_helper'
+require 'rubyvote/election'
+require 'rubyvote/irv'
 
 class TestRunoffVote < Test::Unit::TestCase
-  include ElectionTestHelper
 
   def test_irv
     vote_array = Array.new
@@ -13,7 +13,7 @@ class TestRunoffVote < Test::Unit::TestCase
     15.times {vote_array << "CDBA".split("")}
     17.times {vote_array << "DCBA".split("")}
 
-    test_winner( "A", InstantRunoffVote.new(vote_array).result )
+    assert_equal( "A", InstantRunoffVote.new(vote_array).result.winners[0] )
   end
 
   def test_irv2
@@ -23,7 +23,7 @@ class TestRunoffVote < Test::Unit::TestCase
     15.times {vote_array << "CDBA".split("")}
     17.times {vote_array << "DCBA".split("")}
 
-    test_winner( "D", InstantRunoffVote.new(vote_array).result )
+    assert_equal( "D", InstantRunoffVote.new(vote_array).result.winners[0] )
   end
 
   def test_irv3
@@ -48,7 +48,7 @@ class TestRunoffVote < Test::Unit::TestCase
     39.times {vote_array << "DCAB".split("")}
     12.times {vote_array << "DCBA".split("")}
 
-    test_winner( "C", InstantRunoffVote.new(vote_array).result )
+    assert_equal( "C", InstantRunoffVote.new(vote_array).result.winners[0] )
   end
 
   def test_irv_logic1
@@ -58,7 +58,7 @@ class TestRunoffVote < Test::Unit::TestCase
     15.times {vote_array << "CDBA".split("")}
     15.times {vote_array << "DCBA".split("")}
 
-    test_winner( "B", InstantRunoffLogicVote.new(vote_array).result )
+    assert_equal( "B", InstantRunoffLogicVote.new(vote_array).result.winners[0] )
   end
   ###TODO: test all the other variants
 end

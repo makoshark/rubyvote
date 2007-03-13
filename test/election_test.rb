@@ -1,15 +1,14 @@
-#!/usr/bin/ruby
+#!/usr/bin/ruby -Ilib
 
 require 'test/unit'
-require 'election_test_helper'
+require 'rubyvote/election'
 
 class TestElectionVote < Test::Unit::TestCase
-  include ElectionTestHelper
 
   def test_plurality
     vote_array = "ABCABCABCCCBBAAABABABCCCCCCCCCCCCCA".split("")
 
-    test_winner( "C", PluralityVote.new(vote_array).result )
+    assert_equal( "C", PluralityVote.new(vote_array).result.winners[0] )
   end
 
 
@@ -20,7 +19,7 @@ class TestElectionVote < Test::Unit::TestCase
     11.times {vote_array << "AC".split("")}
     5.times {vote_array << "A".split("")}
 
-    test_winner( "A", ApprovalVote.new(vote_array).result )
+    assert_equal( "A", ApprovalVote.new(vote_array).result.winners[0] )
   end
 end
 
