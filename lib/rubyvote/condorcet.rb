@@ -62,23 +62,33 @@ class CondorcetVote < ElectionVote
     end
   end
 
+  def result
+    top_result = resultFactory( self )
+    until @candidates.empty?
+      aResult = resultFactory( self )
+      top_result.full_results << aResult
+      filter_out(aResult)
+    end
+    top_result
+  end
+
   protected
   def verify_vote(vote=nil)
     vote.instance_of?( Array ) and
       vote == vote.uniq
   end
-  
+
 end
 
 class PureCondorcetVote < CondorcetVote
-  def result
-    PureCondorcetResult.new( self )
+  def resultFactory(init)
+    PureCondorcetResult.new(init)
   end
 end
 
 class CloneproofSSDVote < CondorcetVote
-  def result
-    CloneproofSSDResult.new( self )
+  def resultFactory(init)
+    CloneproofSSDResult.new(init)
   end
 end
 

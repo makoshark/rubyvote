@@ -27,6 +27,8 @@ class TestCondorcetVote < Test::Unit::TestCase
     8.times {vote_array << "EBADC".split("")}
 
     assert_equal "E", CloneproofSSDVote.new(vote_array).result.winners[0]
+    assert_equal [['E'], ['A'], ['C'], ['B'], ['D']], 
+                 CloneproofSSDVote.new(vote_array).result.get_full_results
   end
 
   def test_ssd2
@@ -42,6 +44,8 @@ class TestCondorcetVote < Test::Unit::TestCase
     4.times {vote_array << "DCBA".split("")}
 
     assert_equal "D", CloneproofSSDVote.new(vote_array).result.winners[0] 
+    assert_equal [['D'], ['A'], ['C'], ['B']], 
+                 CloneproofSSDVote.new(vote_array).result.get_full_results
   end
 
   def test_ssd3
@@ -52,5 +56,7 @@ class TestCondorcetVote < Test::Unit::TestCase
     2.times {vote_array << "CBDA".split("")}
 
     assert_equal "B", CloneproofSSDVote.new(vote_array).result.winners[0]
+    assert_equal [['B'], ['C'], ['D'], ['A']], 
+                 CloneproofSSDVote.new(vote_array).result.get_full_results
   end
 end
