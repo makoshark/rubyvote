@@ -33,6 +33,19 @@
 
 class CondorcetVote < ElectionVote
 
+  def initialize(votes=nil)
+    unless defined?(@candidates)
+      @candidates = Array.new
+      votes.each do |vote_row|
+        vote_row = vote_row.flatten if vote_row.class == Array
+        vote_row.each do |vote| 
+          @candidates << vote unless @candidates.include?(vote)
+        end
+      end
+    end
+    super(votes)
+  end
+
   def tally_vote(vote=nil)
 
     vote.each_with_index do |winner, index|
@@ -67,9 +80,6 @@ class CondorcetVote < ElectionVote
           @candidates << loser unless @candidates.include?( loser )
         end
       end
-
-      @candidates << winner unless @candidates.include?( winner ) || 
-        winner.class == Array
     end
   end
 
