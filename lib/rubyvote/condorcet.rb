@@ -36,29 +36,40 @@ class CondorcetVote < ElectionVote
   def tally_vote(vote=nil)
 
     vote.each_with_index do |winner, index|
-      # only run through this if this *is* preferred to something
-      break if vote.length - 1 == index
-      losers = vote.last( vote.length - index )
-
-      losers.each do |loser|
-        next if winner == loser
-
-        @votes[winner] = Hash.new unless @votes.has_key?(winner)
-        @votes[loser] = Hash.new unless @votes.has_key?(loser)
-
-        if @votes[winner].has_key?(loser)
-          @votes[winner][loser] += 1
-        else
-          @votes[winner][loser] = 1
-        end
-
-        # make sure we have a comparable object
-        @votes[loser][winner] = 0 unless @votes[loser].has_key?( winner )
-
-        @candidates << loser unless @candidates.include?( loser )
+      if vote.flatten.length < @candidates.length
+        implied_losers = @candidates.select { |c| not vote.include?(c) }
+        vote.push(implied_losers)
+      end
+      if vote.length - 1 == index
+        losers = []
+      else
+        losers = vote.last( vote.flatten.length - index )
       end
 
-      @candidates << winner unless @candidates.include?( winner )
+      losers.each do |place|
+        place = [place] unless place.class == Array
+        place.each do |loser|
+          
+          next if winner == loser
+
+          @votes[winner] = Hash.new unless @votes.has_key?(winner)
+          @votes[loser] = Hash.new unless @votes.has_key?(loser)
+
+          if @votes[winner].has_key?(loser)
+            @votes[winner][loser] += 1
+          else
+            @votes[winner][loser] = 1
+          end
+
+          # make sure we have a comparable object
+          @votes[loser][winner] = 0 unless @votes[loser].has_key?( winner )
+
+          @candidates << loser unless @candidates.include?( loser )
+        end
+      end
+
+      @candidates << winner unless @candidates.include?( winner ) || 
+        winner.class == Array
     end
   end
 

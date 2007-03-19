@@ -59,4 +59,18 @@ class TestCondorcetVote < Test::Unit::TestCase
     assert_equal [['B'], ['C'], ['D'], ['A']], 
                  CloneproofSSDVote.new(vote_array).result.get_full_results
   end
+
+  def test_ssd_incomplete_votes
+    vote_array = Array.new
+    3.times {vote_array << "ABCD".split("")}
+    2.times {vote_array << "DABC".split("")}
+    2.times {vote_array << "DBCA".split("")}
+    4.times {vote_array << ["C"]}
+    2.times {vote_array << "DBC".split("")}
+
+    assert_equal "B", CloneproofSSDVote.new(vote_array).result.winners[0]
+    assert_equal [['B'], ['C'], ['D'], ['A']], 
+                 CloneproofSSDVote.new(vote_array).result.get_full_results
+  end
+
 end
