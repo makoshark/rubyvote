@@ -76,8 +76,6 @@ class CondorcetVote < ElectionVote
 
           # make sure we have a comparable object
           @votes[loser][winner] = 0 unless @votes[loser].has_key?( winner )
-
-          @candidates << loser unless @candidates.include?( loser )
         end
       end
     end
