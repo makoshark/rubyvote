@@ -63,12 +63,7 @@ class ElectionVote
   end
 
   def filter_out(winner)
-    if winner.winners[0].class == Array
-      to_filter = winner.winners[0]
-    else
-      to_filter = [winner.winners[0]]
-    end
-    @candidates.delete_if {|x| to_filter.include?(x)}
+    @candidates.delete_if {|x| winner.winners.include?(x)}
   end
 
 end

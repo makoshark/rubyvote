@@ -56,14 +56,13 @@ class CondorcetVote < ElectionVote
       if vote.length - 1 == index
         losers = []
       else
-        losers = vote.last( vote.flatten.length - index )
+        losers = vote.flatten.last( vote.flatten.length - index - 1)
       end
 
       losers.each do |place|
         place = [place] unless place.class == Array
         place.each do |loser|
           
-          next if winner == loser
 
           @votes[winner] = Hash.new unless @votes.has_key?(winner)
           @votes[loser] = Hash.new unless @votes.has_key?(loser)
@@ -82,13 +81,7 @@ class CondorcetVote < ElectionVote
   end
 
   def result
-    top_result = resultFactory( self )
-    until @candidates.empty?
-      aResult = resultFactory( self )
-      top_result.full_results << aResult
-      filter_out(aResult)
-    end
-    top_result
+    resultFactory( self )
   end
 
   protected
@@ -109,6 +102,17 @@ class CloneproofSSDVote < CondorcetVote
   def resultFactory(init)
     CloneproofSSDResult.new(init)
   end
+
+  def result
+    top_result = resultFactory( self )
+    until @candidates.empty?
+      aResult = resultFactory( self )
+      top_result.full_results << aResult
+      filter_out(aResult)
+    end
+    top_result
+  end
+
 end
 
 

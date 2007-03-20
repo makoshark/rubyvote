@@ -98,4 +98,13 @@ class TestCondorcetVote < Test::Unit::TestCase
     assert_equal [[78]], result.get_full_results
   end
 
+  def test_ssd_sparse
+    vote_array = Array.new
+    vote_array << ['B', 'D']
+    vote_array << ['A', 'C']
+    vote_array << ['E', 'C']
+    result = CloneproofSSDVote.new(vote_array).result
+    assert_equal 5, result.get_full_results.flatten.size
+  end
+
 end
