@@ -133,6 +133,7 @@ class CondorcetResult < ElectionResult
     votes = @election.votes unless votes
 
     defeats = Array.new
+    candidates = [candidates] unless candidates.class == Array
     candidates.each do |candidate|
       candidates.each do |challenger|
         next if candidate == challenger
@@ -204,6 +205,7 @@ class CloneproofSSDResult < CondorcetResult
       # see the array with the standard defeats
       transitive_defeats = self.defeats(candidates, votes)
 
+      candidates = [candidates] unless candidates.class == Array
       candidates.each do |cand1|
         candidates.each do |cand2|
           candidates.each do |cand3|

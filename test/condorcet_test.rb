@@ -86,4 +86,16 @@ class TestCondorcetVote < Test::Unit::TestCase
     assert_equal [['B'], ['C'], ['D'], ['A']], result.get_full_results
   end
 
+  # 
+  # At one point, we happened to be getting correct results due to the
+  # happy accident that, for example, 'B'.each returns 'B'. The
+  # following election with a single integer vote catches that
+  # condition.
+  #
+  def test_ssd_single_vote
+    result = CloneproofSSDVote.new([[78]]).result
+    assert_equal 78, result.winners[0]
+    assert_equal [[78]], result.get_full_results
+  end
+
 end
