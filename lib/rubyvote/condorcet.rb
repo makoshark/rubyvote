@@ -33,6 +33,8 @@
 
 class CondorcetVote < ElectionVote
 
+  attr_accessor :results
+
   def initialize(votes=nil)
     unless defined?(@candidates)
       @candidates = Array.new
@@ -44,6 +46,7 @@ class CondorcetVote < ElectionVote
       end
     end
     super(votes)
+    @results = Array.new
   end
 
   def tally_vote(vote=nil)
@@ -80,37 +83,51 @@ class CondorcetVote < ElectionVote
     end
   end
 
+  def results
+    if @results.size < 2 && (not @candidates.empty?)
+      tabulate
+    end
+    @results
+  end
+
   def result
-    resultFactory( self )
+    find_only_winner unless @winner
+    @winner
   end
 
   protected
+
   def verify_vote(vote=nil)
     vote.instance_of?( Array ) and
       vote == vote.uniq
   end
 
+  def tabulate
+    find_only_winner unless @winner
+    until @candidates.empty? 
+      aResult = resultFactory( self )
+      @results << aResult.winners
+      filter_out(aResult)
+    end
+  end
+
+  def find_only_winner
+    @winner = resultFactory( self )
+    @results << @winner.winners
+    filter_out(@winner)
+  end
+
 end
 
 class PureCondorcetVote < CondorcetVote
-  def resultFactory(init)
-    PureCondorcetResult.new(init)
+  def result
+    PureCondorcetResult.new(self)
   end
 end
 
 class CloneproofSSDVote < CondorcetVote
   def resultFactory(init)
     CloneproofSSDResult.new(init)
-  end
-
-  def result
-    top_result = resultFactory( self )
-    until @candidates.empty?
-      aResult = resultFactory( self )
-      top_result.full_results << aResult
-      filter_out(aResult)
-    end
-    top_result
   end
 
 end

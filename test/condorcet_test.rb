@@ -28,7 +28,7 @@ class TestCondorcetVote < Test::Unit::TestCase
 
     assert_equal "E", CloneproofSSDVote.new(vote_array).result.winners[0]
     assert_equal [['E'], ['A'], ['C'], ['B'], ['D']], 
-                 CloneproofSSDVote.new(vote_array).result.get_full_results
+                 CloneproofSSDVote.new(vote_array).results
   end
 
   def test_ssd2
@@ -45,7 +45,7 @@ class TestCondorcetVote < Test::Unit::TestCase
 
     assert_equal "D", CloneproofSSDVote.new(vote_array).result.winners[0] 
     assert_equal [['D'], ['A'], ['C'], ['B']], 
-                 CloneproofSSDVote.new(vote_array).result.get_full_results
+                 CloneproofSSDVote.new(vote_array).results
   end
 
   def test_ssd3
@@ -57,7 +57,7 @@ class TestCondorcetVote < Test::Unit::TestCase
 
     assert_equal "B", CloneproofSSDVote.new(vote_array).result.winners[0]
     assert_equal [['B'], ['C'], ['D'], ['A']], 
-                 CloneproofSSDVote.new(vote_array).result.get_full_results
+                 CloneproofSSDVote.new(vote_array).results
   end
 
   def test_ssd_incomplete_votes
@@ -68,9 +68,9 @@ class TestCondorcetVote < Test::Unit::TestCase
     4.times {vote_array << ["C"]}
     2.times {vote_array << "DBC".split("")}
 
-    result = CloneproofSSDVote.new(vote_array).result
-    assert_equal "B", result.winners[0]
-    assert_equal [['B'], ['C'], ['D'], ['A']], result.get_full_results
+    vote = CloneproofSSDVote.new(vote_array)
+    assert_equal "B", vote.result.winners[0]
+    assert_equal [['B'], ['C'], ['D'], ['A']], vote.results
   end
 
   def test_ssd_incomplete_votes_2
@@ -81,9 +81,9 @@ class TestCondorcetVote < Test::Unit::TestCase
     2.times {vote_array << "DBCA".split("")}
     2.times {vote_array << "DBC".split("")}
 
-    result = CloneproofSSDVote.new(vote_array).result
-    assert_equal "B", result.winners[0]
-    assert_equal [['B'], ['C'], ['D'], ['A']], result.get_full_results
+    vote = CloneproofSSDVote.new(vote_array)
+    assert_equal "B", vote.result.winners[0]
+    assert_equal [['B'], ['C'], ['D'], ['A']], vote.results
   end
 
   # 
@@ -93,9 +93,9 @@ class TestCondorcetVote < Test::Unit::TestCase
   # condition.
   #
   def test_ssd_single_vote
-    result = CloneproofSSDVote.new([[78]]).result
-    assert_equal 78, result.winners[0]
-    assert_equal [[78]], result.get_full_results
+    vote = CloneproofSSDVote.new([[78]])
+    assert_equal 78, vote.result.winners[0]
+    assert_equal [[78]], vote.results
   end
 
   def test_ssd_sparse
@@ -103,8 +103,17 @@ class TestCondorcetVote < Test::Unit::TestCase
     vote_array << ['B', 'D']
     vote_array << ['A', 'C']
     vote_array << ['E', 'C']
-    result = CloneproofSSDVote.new(vote_array).result
-    assert_equal 5, result.get_full_results.flatten.size
+    results = CloneproofSSDVote.new(vote_array).results
+    assert_equal 5, results.flatten.size
+  end
+
+  def test_ssd_sparse_2
+    vote_array = Array.new
+    vote_array << [65, 63, 64]
+    vote_array << [64, 65, 66, 63]
+    vote = CloneproofSSDVote.new(vote_array)
+    assert_equal 65, vote.result.winners[0]
+    assert_equal [[65, 64], [63, 66]], vote.results
   end
 
 end

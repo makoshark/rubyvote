@@ -114,7 +114,6 @@ end
 
 class ElectionResult
   attr_reader :winners
-  attr_accessor :full_results
 
   def initialize(voteobj=nil)
     unless voteobj and voteobj.kind_of?( ElectionVote )
@@ -123,7 +122,6 @@ class ElectionResult
 
     @election = voteobj
     @winners = Array.new
-    @full_results = Array.new
   end
 
   def winner
@@ -132,10 +130,6 @@ class ElectionResult
 
   def winner?
     @winners.length > 0
-  end
-
-  def get_full_results
-    @full_results.collect {|x| x.winners}
   end
 
 end
