@@ -229,12 +229,15 @@ class CloneproofSSDResult < CondorcetResult
       candidates = [candidates] unless candidates.class == Array
       candidates.each do |cand1|
         candidates.each do |cand2|
-          candidates.each do |cand3|
-            if transitive_defeats.include?( [ cand2, cand1 ] ) and
-                transitive_defeats.include?( [ cand1, cand3 ] ) and
-                not transitive_defeats.include?( [ cand2, cand3 ] ) and
-                not cand2 == cand3
-              transitive_defeats << [ cand2, cand3 ]
+          unless cand1 == cand2
+            candidates.each do |cand3|
+              if not cand2 == cand3 and 
+                  not cand1 == cand3 and 
+                  transitive_defeats.include?( [ cand2, cand1 ] ) and
+                  transitive_defeats.include?( [ cand1, cand3 ] ) and
+                  not transitive_defeats.include?( [ cand2, cand3 ] )
+                transitive_defeats << [ cand2, cand3 ]
+              end
             end
           end
         end
