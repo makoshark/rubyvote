@@ -149,6 +149,7 @@ class CondorcetResult < ElectionResult
   end
 
   protected
+
   def defeats(candidates=nil, votes=nil)
     candidates = @election.candidates unless candidates
     votes = @election.votes unless votes
@@ -205,6 +206,7 @@ class CloneproofSSDResult < CondorcetResult
   end
 
   protected
+
   def cpssd
     votes = @election.votes
     candidates = *@election.candidates
@@ -225,6 +227,8 @@ class CloneproofSSDResult < CondorcetResult
 
       # see the array with the standard defeats
       transitive_defeats = self.defeats(candidates, votes)
+      defeats_hash = Hash.new
+      transitive_defeats.each { |td| defeats_hash[td] = 1 }
 
       candidates = [candidates] unless candidates.class == Array
       candidates.each do |cand1|
@@ -233,10 +237,11 @@ class CloneproofSSDResult < CondorcetResult
             candidates.each do |cand3|
               if not cand2 == cand3 and 
                   not cand1 == cand3 and 
-                  transitive_defeats.include?( [ cand2, cand1 ] ) and
-                  transitive_defeats.include?( [ cand1, cand3 ] ) and
-                  not transitive_defeats.include?( [ cand2, cand3 ] )
-                transitive_defeats << [ cand2, cand3 ]
+                  defeats_hash[[cand2, cand1]] and
+                  defeats_hash[[cand1, cand3]] and
+                  not defeats_hash[[cand2, cand3]] 
+                transitive_defeats << [cand2, cand3]
+                defeats_hash[[cand2, cand3]] = 1
               end
             end
           end
