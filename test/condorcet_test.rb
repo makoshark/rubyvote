@@ -12,7 +12,19 @@ class TestCondorcetVote < Test::Unit::TestCase
     3.times {vote_array << "CBA".split("")}
     2.times {vote_array << "BAC".split("")}
 
-    assert_equal ["B"], PureCondorcetVote.new(vote_array).result.winners[0]
+    assert_equal "B", PureCondorcetVote.new(vote_array).result.winners[0]
+    assert_equal [['B'], ['A'], ['C']], PureCondorcetVote.new(vote_array).results
+  end
+
+  def test_condorcet_2
+    vote_array = Array.new
+    3.times {vote_array << "678".split("")}
+    3.times {vote_array << "768".split("")}
+    2.times {vote_array << "8".split("")}
+
+    v = PureCondorcetVote.new(vote_array)
+    assert_equal ["6", "7"], v.result.winners
+    assert_equal [['6', '7'], ['8']], v.results
   end
 
   def test_ssd

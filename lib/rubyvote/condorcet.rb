@@ -120,8 +120,8 @@ class CondorcetVote < ElectionVote
 end
 
 class PureCondorcetVote < CondorcetVote
-  def result
-    PureCondorcetResult.new(self)
+  def resultFactory(init)
+    PureCondorcetResult.new(init)
   end
 end
 
@@ -177,6 +177,7 @@ class PureCondorcetResult < CondorcetResult
   end
 
   protected
+
   def condorcet
     votes = @election.votes
     candidates = @election.candidates
@@ -191,11 +192,18 @@ class PureCondorcetResult < CondorcetResult
       victors[winner] << loser
     end
 
-    winners = @election.candidates.find_all do |candidate|
-        victors[candidate].length == @election.candidates.length - 1
+    victory_margin = 1
+    while true
+      winners = @election.candidates.find_all do |candidate|
+        victors[candidate].length == @election.candidates.length - victory_margin
+      end
+      if winners.length > 0
+        @winners = winners
+        return @winners
+      else
+        victory_margin += 1
+      end
     end
-
-    @winners << winners if winners.length == 1
   end
 end
 
