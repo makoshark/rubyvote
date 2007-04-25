@@ -1,0 +1,2 @@
+2007-04-22: PureCondorcetVote now returns a one-dimensional array from
+its #winners method, rather than an array within an array.
