@@ -1,2 +1,6 @@
+2007-05-04: Condorcet votes can now properly handle votes expressing
+equivalency between candidates. Viz. [1, [2, 3], 4] indicates that
+options 2 and 3 are equally preferred, both coming after 1 and before 4.
+
 2007-04-22: PureCondorcetVote now returns a one-dimensional array from
 its #winners method, rather than an array within an array.

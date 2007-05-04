@@ -128,4 +128,24 @@ class TestCondorcetVote < Test::Unit::TestCase
     assert_equal [[65, 64], [63, 66]], vote.results
   end
 
+  def test_ssd_multiple_equivalent
+    vote_array = Array.new
+    vote_array << ['B', ['A', 'C'], 'D']
+    vote_array << ['A', 'C']
+    vote_array << [['E', 'D'], 'C']
+    results = CloneproofSSDVote.new(vote_array).results
+    assert_equal 5, results.flatten.size
+    assert_equal [['A', 'C'], ['B', 'D'], ['E']], results
+  end
+
+  def test_ssd_multiple_equivalent_2
+    vote_array = Array.new
+    vote_array << ['B', ['A'], 'C']
+    vote_array << ['B', ['C'], 'A']
+    results = CloneproofSSDVote.new(vote_array).results
+    assert_equal 3, results.flatten.size
+    assert_equal [['B'], ['A', 'C']], results
+  end
+
+
 end
