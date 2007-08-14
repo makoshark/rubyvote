@@ -42,7 +42,12 @@ class BordaVote < ElectionVote
   def tally_vote(vote)
     points = candidates.length - 1
     vote.each do |candidate|
-      @votes[candidate] = points
+      #if the candidate exist, add the points, otherwise assign them
+      if @votes.has_key?(candidate)
+        @votes[candidate] += points
+      else
+        @votes[candidate] = points
+      end
       points -= 1
     end
   end
@@ -58,6 +63,8 @@ class BordaVote < ElectionVote
 end
 
 class BordaResult < ElectionResult
+  attr_reader :ranked_candidates
+  
   def initialize(voteobj=nil)
     super(voteobj)
     votes = @election.votes
