@@ -75,7 +75,7 @@ class PluralityVote < ElectionVote
   
   protected
   def verify_vote(vote=nil)
-    vote.instance_of?( String )
+    vote ? true : false
   end
 
   def tally_vote(candidate)
