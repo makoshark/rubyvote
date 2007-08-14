@@ -42,7 +42,11 @@ class ElectionVote
     if votes
       if votes.instance_of?( Array )
         votes.each do |vote|
-          self.tally_vote(vote) if self.verify_vote(vote)
+          if self.verify_vote(vote)
+            self.tally_vote(vote)
+          else
+            raise InvalidVoteError.new ("Invalid vote object", vote)
+          end
         end
       else
         raise ElectionError, "Votes must be in the form of an array.", caller
@@ -163,3 +167,10 @@ end
 class ElectionError < ArgumentError
 end
 
+class InvalidVoteError < ElectionError
+  attr_accessor :voteobj
+  def initialize(msg=nil, voteobj=nil)
+    super(msg)
+    @voteobj=voteobj
+  end
+end
