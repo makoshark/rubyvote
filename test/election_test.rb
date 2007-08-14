@@ -11,6 +11,11 @@ class TestElectionVote < Test::Unit::TestCase
     assert_equal( "C", PluralityVote.new(vote_array).result.winners[0] )
   end
 
+  def test_plurality_nonstring
+    vote_array = [1,2,3,1,1,1,2,3]
+    assert_equal( 1, PluralityVote.new(vote_array).result.winners[0] )
+  end
+
 
   def test_approval
     vote_array = Array.new
