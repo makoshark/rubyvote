@@ -217,6 +217,7 @@ class CloneproofSSDResult < CondorcetResult
   def initialize(voteobj=nil)
     super(voteobj)
     @winners = self.cpssd()
+    @winners.delete nil
   end
 
   protected
@@ -224,7 +225,7 @@ class CloneproofSSDResult < CondorcetResult
   def cpssd
     votes = @election.votes
     candidates = *@election.candidates
-    
+
     def in_schwartz_set?(candidate, candidates, transitive_defeats)
       candidates.each do |challenger|
         next if candidate == challenger
