@@ -184,7 +184,10 @@ class PureCondorcetResult < CondorcetResult
   def condorcet
     votes = @election.votes
     candidates = @election.candidates
-
+    unless votes.length>0 and candidates.length>0
+      @winners=[nil]
+      return @winners
+    end
     victors = Hash.new
     candidates.each do |candidate|
       victors[candidate] = Array.new
