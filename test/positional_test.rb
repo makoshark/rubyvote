@@ -9,6 +9,7 @@ class TestPositionalVote < Test::Unit::TestCase
   def test_borda_empty
     vote_array = Array.new
     assert_nil BordaVote.new(vote_array).result.winners[0]
+    assert_equal(false, BordaVote.new(vote_array).result.winner?)
   end
   
   def test_borda

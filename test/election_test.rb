@@ -8,6 +8,7 @@ class TestElectionVote < Test::Unit::TestCase
   def test_plurality_empty
     vote_array = []
     assert_nil PluralityVote.new(vote_array).result.winners[0]
+    assert_equal(false, PluralityVote.new(vote_array).result.winner?)
   end
   
   def test_plurality
@@ -29,6 +30,7 @@ class TestElectionVote < Test::Unit::TestCase
   def test_approval_empty
     vote_array = []
     assert_nil ApprovalVote.new(vote_array).result.winners[0]
+    assert_equal(false, ApprovalVote.new(vote_array).result.winner?)
   end
   
   def test_approval

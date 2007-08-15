@@ -9,6 +9,7 @@ class TestRangeVote < Test::Unit::TestCase
   def test_range_empty
     vote_array = []
     assert_nil RangeVote.new(vote_array).result.winners[0]
+    assert_equal(false, RangeVote.new(vote_array).result.winner?)
   end
   
   def test_range

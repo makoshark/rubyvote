@@ -8,6 +8,7 @@ class TestCondorcetVote < Test::Unit::TestCase
   def test_condorcet_empty
     vote_array =  [[]]
     assert_nil PureCondorcetVote.new(vote_array).result.winners[0]
+    assert_equal(false, PureCondorcetVote.new(vote_array).result.winner?)
   end
 
   def test_condorcet
@@ -34,6 +35,7 @@ class TestCondorcetVote < Test::Unit::TestCase
   def test_ssd_empty
     vote_array = [[]]
     assert_nil  CloneproofSSDVote.new(vote_array).result.winners[0]
+    assert_equal(false, CloneproofSSDVote.new(vote_array).result.winner?)
   end
   
   def test_ssd

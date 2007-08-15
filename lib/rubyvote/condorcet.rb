@@ -185,7 +185,7 @@ class PureCondorcetResult < CondorcetResult
     votes = @election.votes
     candidates = @election.candidates
     unless votes.length>0 and candidates.length>0
-      @winners=[nil]
+      @winners=[]
       return @winners
     end
     victors = Hash.new
@@ -224,7 +224,7 @@ class CloneproofSSDResult < CondorcetResult
   def cpssd
     votes = @election.votes
     candidates = *@election.candidates
-
+    
     def in_schwartz_set?(candidate, candidates, transitive_defeats)
       candidates.each do |challenger|
         next if candidate == challenger

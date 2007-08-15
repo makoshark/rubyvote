@@ -9,6 +9,7 @@ class TestRunoffVote < Test::Unit::TestCase
   def test_irv_empty
     vote_array = Array.new
     assert_nil InstantRunoffVote.new(vote_array).result.winners[0]
+    assert_equal(false, InstantRunoffVote.new(vote_array).result.winner?)
   end
   
   def test_irv
@@ -59,6 +60,7 @@ class TestRunoffVote < Test::Unit::TestCase
   def test_irv_logic_empty
     vote_array = Array.new
     assert_nil InstantRunoffLogicVote.new(vote_array).result.winners[0]
+    assert_equal(false, InstantRunoffLogicVote.new(vote_array).result.winner?)
   end
   
   def test_irv_logic1

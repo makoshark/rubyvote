@@ -88,7 +88,7 @@ class InstantRunoffResult < ElectionResult
     end
     
     unless votes.length > 0
-      @winners=[nil]
+      @winners=[]
       return
     end
 

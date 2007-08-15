@@ -133,7 +133,7 @@ class ElectionResult
   end
 
   def winner?
-    @winners.length > 0
+    @winners.length > 0 and not @winners[0].nil?
   end
 
 end
