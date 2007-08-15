@@ -87,6 +87,11 @@ class InstantRunoffResult < ElectionResult
       apply_retention(votes, votes_sum * params['percent_retention'])
     end
     
+    unless votes.length > 0
+      @winners=[nil]
+      return
+    end
+
     begin
       ranked_candidates = votes.sort do |a, b|
         b[1][0] <=> a[1][0]
