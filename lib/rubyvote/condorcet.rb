@@ -32,7 +32,7 @@
 ## the CloneproofSSDVote classes but should not be used directly.
 
 class CondorcetVote < ElectionVote
-
+  
   attr_accessor :results
 
   def initialize(votes=nil)
@@ -144,15 +144,17 @@ end
 ## directly.
 
 class CondorcetResult < ElectionResult
+  attr_reader :matrix
+  
   def initialize(voteobj=nil)
     unless voteobj and voteobj.kind_of?( CondorcetVote )
       raise ArgumentError, "You must pass a CondorcetVote array.", caller
     end
     super(voteobj)
+    @matrix = voteobj.votes
   end
 
   protected
-
   def defeats(candidates=nil, votes=nil)
     candidates = @election.candidates unless candidates
     votes = @election.votes unless votes

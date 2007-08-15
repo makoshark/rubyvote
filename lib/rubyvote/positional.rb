@@ -38,7 +38,7 @@ class BordaVote < ElectionVote
     end
     super(votes)
   end
-
+   
   def tally_vote(vote)
     points = candidates.length - 1
     vote.each do |candidate|
@@ -51,7 +51,7 @@ class BordaVote < ElectionVote
       points -= 1
     end
   end
-
+  
   def verify_vote(vote=nil)
     vote.instance_of?( Array ) and
       vote == vote.uniq
@@ -64,11 +64,12 @@ end
 
 class BordaResult < ElectionResult
   attr_reader :ranked_candidates
+  attr_reader :points
   
   def initialize(voteobj=nil)
     super(voteobj)
     votes = @election.votes
-
+    
     @ranked_candidates = votes.sort do |a, b|
       b[1] <=> a[1]
     end.collect {|i| i[0]}
@@ -76,6 +77,8 @@ class BordaResult < ElectionResult
     @winners = @ranked_candidates.find_all do |i|
       votes[i] == votes[@ranked_candidates[0]]
     end
+    
+    @points = @election.votes
   end
 
 end

@@ -140,7 +140,8 @@ end
 
 class PluralityResult < ElectionResult
   attr_reader :ranked_candidates
-
+  attr_reader :points
+  
   def initialize(voteobj=nil)
     super(voteobj)
 
@@ -150,6 +151,8 @@ class PluralityResult < ElectionResult
     @ranked_candidates = votes.sort do |a, b|
       b[1] <=> a[1]
     end.collect {|a| a[0]}
+    
+    @points = @election.votes
     
     # winners are anyone who has the same number of votes as the
     # first person
