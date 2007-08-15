@@ -6,6 +6,11 @@ require 'rubyvote/irv'
 
 class TestRunoffVote < Test::Unit::TestCase
 
+  def test_irv_empty
+    vote_array = Array.new
+    assert_nil InstantRunoffVote.new(vote_array).result.winners[0]
+  end
+  
   def test_irv
     vote_array = Array.new
     142.times {vote_array << "ABCD".split("")}
@@ -50,7 +55,12 @@ class TestRunoffVote < Test::Unit::TestCase
 
     assert_equal( "C", InstantRunoffVote.new(vote_array).result.winners[0] )
   end
-
+  
+  def test_irv_logic_empty
+    vote_array = Array.new
+    assert_nil InstantRunoffLogicVote.new(vote_array).result.winners[0]
+  end
+  
   def test_irv_logic1
     vote_array = Array.new
     42.times {vote_array << "ABCD".split("")}

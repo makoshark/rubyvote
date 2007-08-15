@@ -6,6 +6,11 @@ require 'rubyvote/range'
 
 class TestRangeVote < Test::Unit::TestCase
 
+  def test_range_empty
+    vote_array = []
+    assert_nil RangeVote.new(vote_array).result.winners[0]
+  end
+  
   def test_range
     vote_array = []
     42.times {vote_array << {'A' => 10, 'B' => 5, 'C' => 2, 'D' => 1}}

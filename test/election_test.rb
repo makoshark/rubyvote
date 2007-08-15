@@ -5,6 +5,11 @@ require 'rubyvote/election'
 
 class TestElectionVote < Test::Unit::TestCase
 
+  def test_plurality_empty
+    vote_array = []
+    assert_nil PluralityVote.new(vote_array).result.winners[0]
+  end
+  
   def test_plurality
     vote_array = "ABCABCABCCCBBAAABABABCCCCCCCCCCCCCA".split("")
 
@@ -19,6 +24,11 @@ class TestElectionVote < Test::Unit::TestCase
   def test_invalid_voteobj
     vote_array = [1,2,nil,1]
     assert_raise(InvalidVoteError) { PluralityVote.new(vote_array).result.winners[0] }
+  end
+  
+  def test_approval_empty
+    vote_array = []
+    assert_nil ApprovalVote.new(vote_array).result.winners[0]
   end
   
   def test_approval

@@ -5,6 +5,10 @@ require 'rubyvote/election'
 require 'rubyvote/condorcet'
 
 class TestCondorcetVote < Test::Unit::TestCase
+  def test_condorcet_empty
+    vote_array =  [[]]
+    assert_nil PureCondorcetVote.new(vote_array).result.winners[0]
+  end
 
   def test_condorcet
     vote_array = Array.new
@@ -27,6 +31,11 @@ class TestCondorcetVote < Test::Unit::TestCase
     assert_equal [['6', '7'], ['8']], v.results
   end
 
+  def test_ssd_empty
+    vote_array = [[]]
+    assert_nil  CloneproofSSDVote.new(vote_array).result.winners[0]
+  end
+  
   def test_ssd
     vote_array = Array.new
     5.times {vote_array << "ACBED".split("")}
