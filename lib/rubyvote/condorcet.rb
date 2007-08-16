@@ -153,7 +153,29 @@ class CondorcetResult < ElectionResult
     super(voteobj)
     @matrix = voteobj.votes
   end
-
+  
+  def list_defeats
+    victors = Array.new
+    ties = Array.new
+    candidates = @matrix.keys.sort
+    
+    candidates.each do |candidate|
+      candidates.each do |challenger|
+        next if candidate == challenger
+        diff = @matrix[candidate][challenger] - @matrix[challenger][candidate]
+        if diff > 0 
+          victors << [candidate, challenger, diff]
+        elsif diff == 0 && ties.include?([challenger, candidate]) == false
+          ties << [candidate, challenger] 
+        end
+      end
+    end
+    
+    victories = victors.sort {|a,b| b[2] <=> a[2]}
+    
+    return victories, ties    
+  end
+        
   protected
   def defeats(candidates=nil, votes=nil)
     candidates = @election.candidates unless candidates
@@ -182,7 +204,7 @@ class PureCondorcetResult < CondorcetResult
   end
 
   protected
-
+  
   def condorcet
     votes = @election.votes
     candidates = @election.candidates
