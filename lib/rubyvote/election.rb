@@ -45,7 +45,7 @@ class ElectionVote
           if self.verify_vote(vote)
             self.tally_vote(vote)
           else
-            raise InvalidVoteError.new ("Invalid vote object", vote)
+            raise InvalidVoteError.new("Invalid vote object", vote)
           end
         end
       else
