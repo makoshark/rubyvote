@@ -178,11 +178,12 @@ class CondorcetResult < ElectionResult
         
   protected
   def defeats(candidates=nil, votes=nil)
-    candidates = @election.candidates unless candidates
-    votes = @election.votes unless votes
+    candidates ||= @election.candidates || []
+    # we're assumign that if there are candidates, there must be at
+    # least one vote for them
+    votes ||= @election.votes 
 
     defeats = Array.new
-    candidates = [candidates] unless candidates.class == Array
     candidates.each do |candidate|
       candidates.each do |challenger|
         next if candidate == challenger
@@ -242,14 +243,13 @@ class CloneproofSSDResult < CondorcetResult
   def initialize(voteobj=nil)
     super(voteobj)
     @winners = self.cpssd()
-    @winners.delete nil
   end
 
   protected
 
   def cpssd
     votes = @election.votes
-    candidates = *@election.candidates
+    candidates = @election.candidates.dup
 
     def in_schwartz_set?(candidate, candidates, transitive_defeats)
       candidates.each do |challenger|
