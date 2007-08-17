@@ -154,7 +154,7 @@ class CondorcetResult < ElectionResult
     @matrix = voteobj.votes
   end
   
-  def list_defeats
+  def victories_and_ties
     victors = Array.new
     ties = Array.new
     candidates = @matrix.keys.sort
