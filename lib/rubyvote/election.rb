@@ -66,10 +66,6 @@ class ElectionVote
     self.verify_vote(vote)
   end
 
-  def filter_out(winner)
-    @candidates.delete_if {|x| winner.winners.include?(x)}
-  end
-
 end
 
 class PluralityVote < ElectionVote
@@ -118,6 +114,7 @@ end
 
 class ElectionResult
   attr_reader :winners
+  attr_reader :election
 
   def initialize(voteobj=nil)
     unless voteobj and voteobj.kind_of?( ElectionVote )
@@ -135,7 +132,7 @@ class ElectionResult
   def winner?
     @winners.length > 0 and not @winners[0].nil?
   end
-
+  
 end
 
 class PluralityResult < ElectionResult

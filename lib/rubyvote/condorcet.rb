@@ -1,6 +1,10 @@
 # election library -- a ruby library for elections
 # copyright © 2005 MIT Media Lab and Benjamin Mako Hill
 
+require 'rubygems'
+require 'ruby-debug'
+Debugger.start
+
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
@@ -33,8 +37,6 @@
 
 class CondorcetVote < ElectionVote
   
-  attr_accessor :results
-
   def initialize(votes=nil)
     unless defined?(@candidates)
       @candidates = Array.new
@@ -46,7 +48,6 @@ class CondorcetVote < ElectionVote
       end
     end
     super(votes)
-    @results = Array.new
   end
 
   def tally_vote(vote=nil)
@@ -86,53 +87,24 @@ class CondorcetVote < ElectionVote
     end
   end
 
-  def results
-    if @results.size < 2 && (not @candidates.empty?)
-      tabulate
-    end
-    @results
-  end
-
-  def result
-    find_only_winner unless @winner
-    @winner
-  end
-
   protected
 
   def verify_vote(vote=nil)
     vote.instance_of?( Array ) and
       vote == vote.uniq
   end
-
-  def tabulate
-    find_only_winner unless @winner
-    until @candidates.empty? 
-      aResult = resultFactory( self )
-      @results << aResult.winners
-      filter_out(aResult)
-    end
-  end
-
-  def find_only_winner
-    @winner = resultFactory( self )
-    @results << @winner.winners
-    filter_out(@winner)
-  end
-
 end
 
 class PureCondorcetVote < CondorcetVote
-  def resultFactory(init)
-    PureCondorcetResult.new(init)
+  def result
+    PureCondorcetResult.new(self)
   end
 end
 
 class CloneproofSSDVote < CondorcetVote
-  def resultFactory(init)
-    CloneproofSSDResult.new(init)
+  def result
+    CloneproofSSDResult.new(self)
   end
-
 end
 
 
@@ -183,6 +155,14 @@ class CondorcetResult < ElectionResult
     
     return victories, ties    
   end
+
+  def ranked_candidates
+    if not defined?(@ranked_candidates)
+      @ranked_candidates = build_ranked_candidates()
+    end
+
+    @ranked_candidates
+  end
         
   protected
   def defeats(candidates=nil, votes=nil)
@@ -202,6 +182,27 @@ class CondorcetResult < ElectionResult
     end
 
     defeats
+  end
+  
+  def build_ranked_candidates
+    # build a lis of ranked candidates by dropping the winner and
+    # cursing
+
+    ranked_candidates = []
+
+    resultobj = self.dup
+    candidates = self.election.candidates
+
+    until candidates.empty? 
+      ranked_candidates << resultobj.winners
+      
+      new_voteobj = resultobj.election.dup
+      candidates = new_voteobj.candidates
+      new_voteobj.candidates.delete_if {|x| resultobj.winners.include?(x)}
+      resultobj = new_voteobj.result
+    end
+
+    ranked_candidates
   end
 
 end
