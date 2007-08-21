@@ -123,33 +123,21 @@ class CondorcetResult < ElectionResult
   end
   
   def victories_and_ties
-    victors = Array.new
-    ties = Array.new
-    victories = Hash.new
+    victories_ties = {}
     candidates = @matrix.keys.sort
     
     candidates.each do |candidate|
       candidates.each do |challenger|
         next if candidate == challenger
         diff = @matrix[candidate][challenger] - @matrix[challenger][candidate]
-        if diff > 0 
-          victors << [candidate, challenger, diff]
-        elsif diff == 0 && ties.include?([challenger, candidate]) == false
-          ties << [candidate, challenger] 
+        victories_ties[candidate] = {} unless victories_ties.key?(candidate)
+        if diff >= 0
+          victories_ties[candidate][challenger] = diff
         end
-      end
-    end  
-    
-    victors.each do |list|
-      if victories.has_key?(list[0])
-        victories[list[0]][list[1]] = list[2]       
-      else
-        victories[list[0]] = Hash.new
-        victories[list[0]][list[1]] = list[2]
       end
     end
     
-    return victories, ties    
+    return victories_ties    
   end
 
   def ranked_candidates
