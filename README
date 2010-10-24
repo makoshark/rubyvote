@@ -51,7 +51,7 @@ simply takes the raw "tallies" of votes and computes the results.
 Currently, it does not include any sample interfaces (although if
 contributed, these may be included).
 
-`RubyVote` current includes a set of classes to tally votes and compute
+`RubyVote` currently includes a set of classes to tally votes and compute
 winners in elections or votes using a series of different methods.
 Currently these include:
 

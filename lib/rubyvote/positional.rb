@@ -29,6 +29,19 @@
 ## These classes inherit from and/or are modeled after the classes in
 ## election.rb and condorcet.rb
 
+# Borda is a positional voting system and, as a result, takes a list of
+# ranked candidates and assigns points to each candidates based on their
+# order. In Borda, there are *n* candidate and the first candidates is
+# assigned *n* - 1 points and each subsequent candidate is assigned one
+# less point. The candidate is assigned no points.
+#
+# Currently, all candidates should be ranked in each ballot.
+#
+# Example::
+#
+#   require 'positional'
+#   vote_array = [ ["A", "B"],  ["B", "A"], ["B", "A"] ]
+#   resultobject = BordaVote.new(vote_array).result
 class BordaVote < ElectionVote
 
   def initialize(votes=nil)

@@ -1,5 +1,3 @@
-#!/usr/bin/ruby -Ilib
-
 require 'test/unit'
 require 'rubyvote/election'
 require 'rubyvote/condorcet'
@@ -18,7 +16,7 @@ class TestCondorcetVote < Test::Unit::TestCase
     2.times {vote_array << "BAC".split("")}
 
     assert_equal "B", PureCondorcetVote.new(vote_array).result.winners[0]
-    assert_equal [['B'], ['A'], ['C']], PureCondorcetVote.new(vote_array).results
+    assert_equal [['B'], ['A'], ['C']], PureCondorcetVote.new(vote_array).result.ranked_candidates
   end
 
   def test_condorcet_2
@@ -29,7 +27,7 @@ class TestCondorcetVote < Test::Unit::TestCase
 
     v = PureCondorcetVote.new(vote_array)
     assert_equal ["6", "7"], v.result.winners
-    assert_equal [['6', '7'], ['8']], v.results
+    assert_equal [['6', '7'], ['8']], v.result.ranked_candidates
   end
 
   def test_ssd_empty
@@ -51,7 +49,7 @@ class TestCondorcetVote < Test::Unit::TestCase
 
     assert_equal "E", CloneproofSSDVote.new(vote_array).result.winners[0]
     assert_equal [['E'], ['A'], ['C'], ['B'], ['D']], 
-                 CloneproofSSDVote.new(vote_array).results
+                 CloneproofSSDVote.new(vote_array).result.ranked_candidates
   end
 
   def test_ssd2
@@ -68,7 +66,7 @@ class TestCondorcetVote < Test::Unit::TestCase
 
     assert_equal "D", CloneproofSSDVote.new(vote_array).result.winners[0] 
     assert_equal [['D'], ['A'], ['C'], ['B']], 
-                 CloneproofSSDVote.new(vote_array).results
+                 CloneproofSSDVote.new(vote_array).result.ranked_candidates
   end
 
   def test_ssd3
@@ -80,7 +78,7 @@ class TestCondorcetVote < Test::Unit::TestCase
 
     assert_equal "B", CloneproofSSDVote.new(vote_array).result.winners[0]
     assert_equal [['B'], ['C'], ['D'], ['A']], 
-                 CloneproofSSDVote.new(vote_array).results
+                 CloneproofSSDVote.new(vote_array).result.ranked_candidates
   end
 
   def test_ssd_incomplete_votes
@@ -93,7 +91,7 @@ class TestCondorcetVote < Test::Unit::TestCase
 
     vote = CloneproofSSDVote.new(vote_array)
     assert_equal "B", vote.result.winners[0]
-    assert_equal [['B'], ['C'], ['D'], ['A']], vote.results
+    assert_equal [['B'], ['C'], ['D'], ['A']], vote.result.ranked_candidates
   end
 
   def test_ssd_incomplete_votes_2
@@ -106,7 +104,7 @@ class TestCondorcetVote < Test::Unit::TestCase
 
     vote = CloneproofSSDVote.new(vote_array)
     assert_equal "B", vote.result.winners[0]
-    assert_equal [['B'], ['C'], ['D'], ['A']], vote.results
+    assert_equal [['B'], ['C'], ['D'], ['A']], vote.result.ranked_candidates
   end
 
   # 
@@ -118,7 +116,7 @@ class TestCondorcetVote < Test::Unit::TestCase
   def test_ssd_single_vote
     vote = CloneproofSSDVote.new([[78]])
     assert_equal 78, vote.result.winners[0]
-    assert_equal [[78]], vote.results
+    assert_equal [[78]], vote.result.ranked_candidates
   end
 
   def test_ssd_sparse
@@ -126,8 +124,8 @@ class TestCondorcetVote < Test::Unit::TestCase
     vote_array << ['B', 'D']
     vote_array << ['A', 'C']
     vote_array << ['E', 'C']
-    results = CloneproofSSDVote.new(vote_array).results
-    assert_equal 5, results.flatten.size
+    ranked_candidates = CloneproofSSDVote.new(vote_array).result.ranked_candidates
+    assert_equal 5, ranked_candidates.flatten.size
   end
 
   def test_ssd_sparse_2
@@ -136,7 +134,7 @@ class TestCondorcetVote < Test::Unit::TestCase
     vote_array << [64, 65, 66, 63]
     vote = CloneproofSSDVote.new(vote_array)
     assert_equal 65, vote.result.winners[0]
-    assert_equal [[65, 64], [63, 66]], vote.results
+    assert_equal [[65, 64], [63, 66]], vote.result.ranked_candidates
   end
 
   def test_ssd_multiple_equivalent
@@ -144,19 +142,17 @@ class TestCondorcetVote < Test::Unit::TestCase
     vote_array << ['B', ['A', 'C'], 'D']
     vote_array << ['A', 'C']
     vote_array << [['E', 'D'], 'C']
-    results = CloneproofSSDVote.new(vote_array).results
-    assert_equal 5, results.flatten.size
-    assert_equal [['A', 'C'], ['B', 'D'], ['E']], results
+    ranked_candidates = CloneproofSSDVote.new(vote_array).result.ranked_candidates
+    assert_equal 5, ranked_candidates.flatten.size
+    assert_equal [['A', 'C'], ['B', 'D'], ['E']], ranked_candidates
   end
 
   def test_ssd_multiple_equivalent_2
     vote_array = Array.new
     vote_array << ['B', ['A'], 'C']
     vote_array << ['B', ['C'], 'A']
-    results = CloneproofSSDVote.new(vote_array).results
-    assert_equal 3, results.flatten.size
-    assert_equal [['B'], ['A', 'C']], results
+    ranked_candidates = CloneproofSSDVote.new(vote_array).result.ranked_candidates
+    assert_equal 3, ranked_candidates.flatten.size
+    assert_equal [['B'], ['A', 'C']], ranked_candidates
   end
-
-
 end

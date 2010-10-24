@@ -1,4 +1,18 @@
+# IRV is a preferential voting system used widely for government elections
+# in Australia and New Zealand and elsewhere. IRV asks voters to rank
+# candidates in preference and then holds a series of "runoff" elections
+# by eliminating the weakest candidate and recomputing the election
+# results until there exists a candidate who has a majority of the
+# remaining votes.
+
+# Example::
+
+#   require 'irv'
+#   vote_array = [ ["A", "B"],  ["B", "A"], ["B", "A"] ]
+#   resultobject = InstantRunoffVote.new(vote_array).result
+#
 class InstantRunoffVote < ElectionVote
+
   def initialize(votes=nil)
     @candidates = Array.new
     votes.each do |vote|
@@ -15,22 +29,22 @@ class InstantRunoffVote < ElectionVote
   end
   
   protected
-  def tally_vote(vote)
-    votecopy = vote.dup
-    candidate = votecopy.shift
-    votes[candidate] = [0, Hash.new] unless votes.has_key?(candidate)
-    votes[candidate][0] += 1
-    if votes[candidate][1].has_key?(votecopy)
-      votes[candidate][1][votecopy] += 1
-    else
-      votes[candidate][1][votecopy] = 1
+    def vote_valid?(vote = nil)
+      super && vote.is_a?(Array) && vote == vote.uniq
     end
-  end
 
-  def verify_vote(vote=nil)
-    vote.instance_of?( Array ) and
-      vote == vote.uniq
-  end
+    def tally_vote(vote)
+      votecopy = vote.dup
+      candidate = votecopy.shift
+      votes[candidate] = [0, Hash.new] unless votes.has_key?(candidate)
+      votes[candidate][0] += 1
+      if votes[candidate][1].has_key?(votecopy)
+        votes[candidate][1][votecopy] += 1
+      else
+        votes[candidate][1][votecopy] = 1
+      end
+    end
+
 end
 
 class InstantRunoffLogicVote < InstantRunoffVote

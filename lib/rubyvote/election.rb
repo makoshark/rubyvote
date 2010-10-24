@@ -62,7 +62,7 @@ class ElectionVote
   end
 
   # by default, this does nothing. it must be redefined in any subclass
-  def tally_vote
+  def tally_vote(vote)
     self.verify_vote(vote)
   end
 
@@ -108,10 +108,15 @@ end
 ## Election Result Classes
 ##
 
-## There classes are used to compute and report the results of an
-## election. In almost all cases, these will be returned by the
-## #results method of a corresponding ElectionVote subclass.
-
+# ElectionResult and its subclasses are used to identify and report the results
+# of an election. In almost all cases, these will be returned by the #results
+# method of a corresponding ElectionVote subclass.
+#
+# Each ElectionResult object has the following methods:
+#
+#  * #winner? -- return Boolean as to the winner or winners of an election
+#  * #winners -- an array of winners of the election
+#  * #ranked_candidates -- (where available) a list of ranked candidates
 class ElectionResult
   attr_reader :winners
   attr_reader :election

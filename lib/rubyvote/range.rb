@@ -12,20 +12,20 @@ class RangeVote < ElectionVote
   end
 
   protected
-  def verify_vote(vote=nil)
-    vote.instance_of?(Hash) && vote.all?{|c,score| @valid_range.include?(score)}
-  end
+    def vote_valid?(vote=nil)
+      super && vote.is_a?(Hash) && vote.all?{|c,score| @valid_range.include?(score)}
+    end
 
-  def tally_vote(vote)
-    vote.each do |candidate, score|
-      if @votes.has_key?(candidate)
-        @votes[candidate] += score
-      else
-        @votes[candidate] = score
-        @candidates << candidate
+    def tally_vote(vote)
+      vote.each do |candidate, score|
+        if @votes.has_key?(candidate)
+          @votes[candidate] += score
+        else
+          @votes[candidate] = score
+          @candidates << candidate
+        end
       end
     end
-  end
 end
 
 class RangeResult < PluralityResult
